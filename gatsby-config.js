@@ -1,58 +1,66 @@
 module.exports = {
   siteMetadata: {
     // Site URL for when it goes live
-    siteUrl: `https://elastic-meninsky-aa7c74.netlify.app/`,
+    siteUrl: `calebcross.github.io`,
     // Your Name
-    name: 'Ryan Fitzgerald',
+    name: 'Caleb Cross',
     // Main Site Title
-    title: `Ryan Fitzgerald | Full-Stack Developer`,
+    title: `Caleb Cross | Full-Stack Developer`,
     // Description that goes under your name in main bio
-    description: `Lorem ipsum dolor sit amet consectetur adipisicing elit, ipsum.`,
+    description: `Frontend Focused Fullstack Developer`,
     // Optional: Twitter account handle
-    author: `@rfitzio`,
+    author: ``,
     // Optional: Github account URL
-    github: `https://github.com/ryanfitzgerald`,
+    github: `https://github.com/calebcross`,
     // Optional: LinkedIn account URL
-    linkedin: `https://www.linkedin.com/in/ryanafitzgerald/`,
+    linkedin: `https://www.linkedin.com/in/calebacross/`,
     // Content of the About Me section
-    about: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus perferendis porro cumque ea error ab voluptatem. Temporibus adipisci exercitationem similique itaque quibusdam laudantium, qui molestiae quas, aut amet animi id.`,
+    about: `Self-driven and motivated Full Stack Software Engineer with 3 years of experience implementing pixel perfect UI/UX design systems
+and crafting full stack web experiences using React with Next.js and Node.js with Prisma. Recently launched a E-commerce site built
+using Next.js and Shopify and led an initiative to bring a website up to WCAG2 standard.`,
     // Optional: List your projects, they must have `name` and `description`. `link` is optional.
     projects: [
       {
-        name: 'Devfolio',
+        name: 'UpriseArt',
         description:
-          'A zero-config and blazing fast personal site + blog built with GatsbyJs and TailwindCSS',
-        link: 'https://github.com/RyanFitzgerald/devfolio',
+          'Marketing site built with React, Next.js, TailwindCSS and GraphQL API from Contentful and shopify site for a art gallery based in NYC',
+        link: 'https://www.upriseart.com',
       },
       {
-        name: 'ChromeExtensionKit',
+        name: 'North Park Transportation',
         description:
-          'Kit to jump-start your Chrome extension projects with a variety of battle-tested starter templates',
-        link: 'https://chromeextensionkit.com/?ref=devfolio',
+          'Marketing and Customer Portal site built for 75 year old trucking company based in Denver, Colorado',
+        link: 'https://www.nopk.com',
       },
       {
-        name: 'Another Cool Project',
+        name: 'Brightline Health',
         description:
-          'Lorem ipsum dolor sit amet consectetur adipisicing elit ducimus perferendis',
-        link: 'https://github.com/RyanFitzgerald/devfolio',
+          'Marketing site built for Healtcare Startup built using React with Next.js and Strapi CMS and API based career site using Greenhouse API',
+        link: 'https://www.hellobrightline.com',
+      },
+      {
+        name: 'Breastcancer.org',
+        description:
+          'Marketing site built for Non-profit built using React and TailwindCSS',
+        link: 'https://www.breastcancer.org',
       },
     ],
     // Optional: List your experience, they must have `name` and `description`. `link` is optional.
     experience: [
       {
-        name: 'Acme Corp',
-        description: 'Full-Stack Developer, February 2020 - Present',
-        link: 'https://github.com/RyanFitzgerald/devfolio',
+        name: 'Shiftlab',
+        description: 'Full-Stack Developer, July 2021 - Present',
+        link: 'https://shiftlab.co',
       },
       {
-        name: 'Globex Corp',
-        description: 'Full-Stack Developer, December 2017 - February 2020',
-        link: 'https://github.com/RyanFitzgerald/devfolio',
+        name: 'WeWork',
+        description: 'Senior Technology Lead, January 2018 - August 2020',
+        link: '',
       },
       {
-        name: 'Hooli',
-        description: 'Full-Stack Developer, May 2015 - December 2017',
-        link: 'https://github.com/RyanFitzgerald/devfolio',
+        name: 'Amazon',
+        description: 'IT Support Engineer, September 2015 - March 2017',
+        link: '',
       },
     ],
     // Optional: List your skills, they must have `name` and `description`.
@@ -60,7 +68,7 @@ module.exports = {
       {
         name: 'Languages & Frameworks',
         description:
-          'JavaScript (ES6+), Golang, Node.js, Express.js, React, Ruby on Rails, PHP',
+          'JavaScript (ES6+), Typescript, GraphQL, Node.js, Shopify, Express.js, React, Next.js, TailwindCSS',
       },
       {
         name: 'Databases',
@@ -69,7 +77,7 @@ module.exports = {
       {
         name: 'Other',
         description:
-          'Docker, Amazon Web Services (AWS), CI / CD, Microservices, API design, Agile / Scrum',
+          'Docker, Amazon Web Services (AWS), CI / CD, Microservices, API design, Agile / Scrum, Vercel, Storybook , Figma',
       },
     ],
   },
