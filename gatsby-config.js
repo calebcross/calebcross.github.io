@@ -15,7 +15,7 @@ module.exports = {
     // Optional: LinkedIn account URL
     linkedin: `https://www.linkedin.com/in/calebacross/`,
     // Content of the About Me section
-    about: `Self-driven and motivated Full Stack Software Engineer with 3 years of experience implementing pixel perfect UI/UX design systems
+    about: `Self-driven and motivated Full Stack Software Engineer with 4 years of experience implementing pixel perfect UI/UX design systems
 and crafting full stack web experiences using React with Next.js and Node.js with Prisma. Recently launched a E-commerce site built
 using Next.js and Shopify and led an initiative to bring a website up to WCAG2 standard.`,
     // Optional: List your projects, they must have `name` and `description`. `link` is optional.
@@ -29,7 +29,7 @@ using Next.js and Shopify and led an initiative to bring a website up to WCAG2 s
       {
         name: 'North Park Transportation',
         description:
-          'Marketing and Customer Portal site built for 75 year old trucking company based in Denver, Colorado',
+          'Marketing and Customer Portal site built for 75 year old trucking company based in Denver, Colorado. Also built company first API for tracking shipments and building shipment agreements/contracts',
         link: 'https://www.nopk.com',
       },
       {
@@ -49,12 +49,12 @@ using Next.js and Shopify and led an initiative to bring a website up to WCAG2 s
     experience: [
       {
         name: 'Shiftlab',
-        description: 'Full-Stack Developer, July 2021 - Present',
+        description: 'Full-Stack Developer, July 2020 - Present',
         link: 'https://shiftlab.co',
       },
       {
         name: 'WeWork',
-        description: 'Senior Technology Lead, January 2018 - August 2020',
+        description: 'Senior Technology Lead, January 2018 - May 2020',
         link: '',
       },
       {
