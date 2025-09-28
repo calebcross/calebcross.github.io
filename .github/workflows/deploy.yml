@@ -32,8 +32,9 @@ jobs:
         run: npm run build
 
       - name: Upload artifact for GitHub Pages
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
+          name: public-artifact
           path: ./public
 
   deploy:
@@ -44,6 +45,12 @@ jobs:
       id-token: write
 
     steps:
+      - name: Download public artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: public-artifact
+          path: ./public
+
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
       - name: Wait for Pages to be ready and smoke-test
