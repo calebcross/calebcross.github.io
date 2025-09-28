@@ -1,6 +1,6 @@
 ---
 title: My Fourth Blog Post
-date: '2020-10-12T12:00:00.00Z'
+date: '2020-10-12'
 description: 'Unde reprehenderit inventore sunt, consequatur'
 ---
 

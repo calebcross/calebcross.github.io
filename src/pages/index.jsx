@@ -9,7 +9,7 @@ import SectionBlog from '../components/section-blog';
 import SectionExperience from '../components/section-experience';
 import SectionProjects from '../components/section-projects';
 import SectionSkills from '../components/section-skills';
-import SEO from '../components/seo';
+import useSiteMetadata from '../components/seo';
 
 const Index = ({ data }) => {
   const about = get(data, 'site.siteMetadata.about', false);
@@ -21,7 +21,7 @@ const Index = ({ data }) => {
 
   return (
     <Layout>
-      <SEO />
+      {/* Head is exported below for Gatsby Head API */}
       <Header metadata={data.site.siteMetadata} noBlog={noBlog} />
       {about && <SectionAbout about={about} />}
       {projects && projects.length && <SectionProjects projects={projects} />}
@@ -35,6 +35,26 @@ const Index = ({ data }) => {
 };
 
 export default Index;
+
+export const Head = () => {
+  const site = useSiteMetadata();
+  const title = site?.title || '';
+  const description = site?.description || '';
+
+  return (
+    <>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta property="og:type" content="website" />
+      <meta name="twitter:card" content="summary" />
+      <meta name="twitter:creator" content={site?.author || ''} />
+      <meta name="twitter:title" content={title} />
+      <meta name="twitter:description" content={description} />
+    </>
+  );
+};
 
 export const pageQuery = graphql`
   query {
@@ -63,10 +83,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    allMarkdownRemark(
-      sort: { fields: [frontmatter___date], order: DESC }
-      limit: 5
-    ) {
+    allMarkdownRemark(sort: { frontmatter: { date: DESC } }, limit: 0) {
       edges {
         node {
           excerpt

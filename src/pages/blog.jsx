@@ -4,7 +4,7 @@ import React from 'react';
 import BlogPosts from '../components/blog-posts';
 import Header from '../components/header';
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import useSiteMetadata from '../components/seo';
 import NotFound from '../pages/404';
 
 const Index = ({ data }) => {
@@ -17,7 +17,7 @@ const Index = ({ data }) => {
 
   return (
     <Layout>
-      <SEO title="Blog" />
+      {/* Head export below for Gatsby Head API */}
       <Header metadata={data.site.siteMetadata} />
       {!noBlog && <BlogPosts posts={posts} />}
     </Layout>
@@ -25,6 +25,23 @@ const Index = ({ data }) => {
 };
 
 export default Index;
+
+export const Head = () => {
+  const site = useSiteMetadata();
+  const defaultTitle = site?.title || '';
+  const title = `Blog${defaultTitle ? ` | ${defaultTitle}` : ''}`;
+  const description = site?.description || '';
+
+  return (
+    <>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta name="twitter:card" content="summary" />
+    </>
+  );
+};
 
 export const pageQuery = graphql`
   query {
@@ -39,7 +56,7 @@ export const pageQuery = graphql`
         linkedin
       }
     }
-    allMarkdownRemark(sort: { fields: [frontmatter___date], order: DESC }) {
+    allMarkdownRemark(sort: { frontmatter: { date: DESC } }) {
       edges {
         node {
           excerpt

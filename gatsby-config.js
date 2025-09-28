@@ -1,7 +1,11 @@
+require('dotenv').config();
+
+const googleGtagId = process.env.GOOGLE_GTAG_ID || '';
+
 module.exports = {
   siteMetadata: {
     // Site URL for when it goes live
-    siteUrl: `calebcross.github.io`,
+    siteUrl: `https://calebcross.github.io`,
     // Your Name
     name: 'Caleb Cross',
     // Main Site Title
@@ -15,16 +19,20 @@ module.exports = {
     // Optional: LinkedIn account URL
     linkedin: `https://www.linkedin.com/in/calebacross/`,
     // Content of the About Me section
-    about: `Self-driven and motivated Full Stack Software Engineer with 4 years of experience implementing pixel perfect UI/UX design systems
-and crafting full stack web experiences using React with Next.js and Node.js with Prisma. Recently launched a E-commerce site built
-using Next.js and Shopify and led an initiative to bring a website up to WCAG2 standard.`,
+    about: `Full Stack Software Engineer with 4+ years of experience building and optimizing marketing and e-commerce websites with React, Next.js, and Contentful. Skilled in Core Web Vitals optimization, SEO enhancements, accessibility (WCAG 2.1), and scalable component design. Partnered closely with marketing, growth, and design teams to deliver high-converting, high-performing websites. Recently launched a Next.js + Shopify marketing site, drove CRO experiments and A/B testing with experimentation tools, and reduced accessibility violations by 97%. Experienced with analytics tagging (Google Tag Manager), QA testing, and rapid deployments with Vercel. Customer-facing engineer with strong communication and documentation skills.`,
     // Optional: List your projects, they must have `name` and `description`. `link` is optional.
     projects: [
       {
         name: 'UpriseArt',
         description:
-          'Marketing site built with React, Next.js, TailwindCSS and GraphQL API from Contentful and shopify site for a art gallery based in NYC',
+          'Rebuilt UpriseArt’s marketing site with Next.js, Contentful, and Shopify, creating a high-performing, SEO-optimized, and accessible platform. Partnered with marketing and design teams to implement scalable components and CRO experiments, driving growth for both the brand and its artists.',
         link: 'https://www.upriseart.com',
+      },
+      {
+        name: 'ForaTravel',
+        description:
+          'ForATravel.com, a marketing site developed with Next.js, Tailwind CSS, and Contentful. Designed reusable components and scalable content models to empower the marketing team to launch new campaigns quickly. Focused on performance, accessibility, and Core Web Vitals, ensuring a fast, engaging experience that supported brand growth.',
+        link: 'https://www.foratravel.com',
       },
       {
         name: 'North Park Transportation',
@@ -68,21 +76,26 @@ using Next.js and Shopify and led an initiative to bring a website up to WCAG2 s
       {
         name: 'Languages & Frameworks',
         description:
-          'JavaScript (ES6+), Typescript, GraphQL, Node.js, Shopify, Express.js, React, Next.js, TailwindCSS',
+          'JavaScript (ES6+), TypeScript, React, Next.js (Page Router & App Router), Node.js, Express.js, GraphQL, Tailwind CSS, Shopify',
       },
       {
-        name: 'Databases',
-        description: 'MongoDB, PostreSQL, MySQL',
+        name: 'Databases & Data',
+        description: 'PostgreSQL, Prisma ORM, MySQL, MongoDB',
       },
       {
-        name: 'Other',
+        name: 'CMS & Marketing Tech',
         description:
-          'Docker, Amazon Web Services (AWS), CI / CD, Microservices, API design, Agile / Scrum, Vercel, Storybook , Figma',
+          'Contentful (Headless CMS + Content Modeling), Google Tag Manager (GTM), Conversion Rate Optimization (CRO), A/B Testing & Experimentation Tools, SEO Enhancements',
+      },
+      {
+        name: 'Tools & Workflow',
+        description:
+          'Vercel (CI/CD & Edge Deployment), Amazon Web Services (AWS), Docker, GitHub Actions, QA / Browser & Device Testing, Accessibility (WCAG 2.1), Figma, Agile / Scrum, Storybook',
       },
     ],
   },
   plugins: [
-    `gatsby-plugin-react-helmet`,
+    // react-helmet removed: using Gatsby Head API instead
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -123,13 +136,67 @@ using Next.js and Shopify and led an initiative to bring a website up to WCAG2 s
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
     `gatsby-plugin-postcss`,
-    `gatsby-plugin-feed`,
     {
-      resolve: `gatsby-plugin-google-analytics`,
+      resolve: `gatsby-plugin-feed`,
       options: {
-        trackingId: `ADD YOUR TRACKING ID HERE`, // Optional Google Analytics
+        query: `
+          {
+            site {
+              siteMetadata {
+                title
+                description
+                siteUrl
+              }
+            }
+          }
+        `,
+        feeds: [
+          {
+            serialize: ({ query: { site, allMarkdownRemark } }) =>
+              allMarkdownRemark.edges.map((edge) => ({
+                ...edge.node.frontmatter,
+                description: edge.node.excerpt,
+                date: edge.node.frontmatter.date,
+                url: site.siteMetadata.siteUrl + edge.node.fields.slug,
+                guid: site.siteMetadata.siteUrl + edge.node.fields.slug,
+              })),
+            query: `
+              {
+                allMarkdownRemark(sort: { frontmatter: { date: DESC } }) {
+                  edges {
+                    node {
+                      excerpt
+                      fields { slug }
+                      frontmatter { title date description }
+                    }
+                  }
+                }
+              }
+            `,
+            output: '/rss.xml',
+            title: 'Devfolio RSS Feed',
+          },
+        ],
       },
     },
+    // Conditionally include Google gtag plugin if GOOGLE_GTAG_ID is provided
+    ...(googleGtagId
+      ? [
+          {
+            resolve: `gatsby-plugin-google-gtag`,
+            options: {
+              trackingIds: [googleGtagId],
+              gtagConfig: {
+                anonymize_ip: true,
+                send_page_view: true,
+              },
+              pluginConfig: {
+                head: true,
+              },
+            },
+          },
+        ]
+      : []),
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
@@ -144,3 +211,5 @@ using Next.js and Shopify and led an initiative to bring a website up to WCAG2 s
     },
   ],
 };
+
+//

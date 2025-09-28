@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'gatsby';
 
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import useSiteMetadata from '../components/seo';
 
 const classes = {
   title: 'text-lg font-bold',
@@ -11,7 +11,7 @@ const classes = {
 
 const NotFoundPage = () => (
   <Layout>
-    <SEO title="Not found" />
+    {/* Head exported below for Gatsby Head API */}
     <h1 className={classes.title}>404: Not Found</h1>
     <p>
       You just hit a route that doesn't exist.{' '}
@@ -24,3 +24,17 @@ const NotFoundPage = () => (
 );
 
 export default NotFoundPage;
+
+export const Head = () => {
+  const site = useSiteMetadata();
+  const defaultTitle = site?.title || '';
+  const title = `Not found${defaultTitle ? ` | ${defaultTitle}` : ''}`;
+  const description = site?.description || '';
+
+  return (
+    <>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+    </>
+  );
+};

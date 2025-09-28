@@ -1,9 +1,7 @@
 module.exports = {
-  future: {
-    removeDeprecatedGapUtilities: true,
-    purgeLayersByDefault: true,
-  },
-  purge: ['./src/**/*.js', './src/**/*.jsx', './src/**/*.ts', './src/**/*.tsx'],
+  // Tailwind v3+ / v4 config: use `content` instead of `purge` and
+  // remove deprecated `future` flags
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './content/**/*.{md,mdx,markdown}'],
   theme: {
     extend: {
       screens: {

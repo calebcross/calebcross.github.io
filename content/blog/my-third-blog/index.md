@@ -1,6 +1,6 @@
 ---
 title: My Third Blog Post
-date: '2020-10-10T12:00:00.00Z'
+date: '2020-10-10'
 description: 'Dolor inventore quasi necessitatibus odio eaque doloribus'
 ---
 

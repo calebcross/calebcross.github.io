@@ -4,7 +4,7 @@ import React from 'react';
 
 import Header from '../components/header';
 import Layout from '../components/layout';
-import SEO from '../components/seo';
+import useSiteMetadata from '../components/seo';
 
 const classes = {
   wrapper: 'mt-16 blog-content',
@@ -18,7 +18,7 @@ const BlogPost = ({ data }) => {
   return (
     <Layout>
       <Header metadata={data.site.siteMetadata} />
-      <SEO title={post.frontmatter.title} />
+      {/* Head exported below for Gatsby Head API */}
       <h1 className={classes.title}>{post.frontmatter.title}</h1>
       <p className={classes.date}>
         Posted on {moment(post.frontmatter.date).format('MMMM D, YYYY')}
@@ -32,6 +32,25 @@ const BlogPost = ({ data }) => {
 };
 
 export default BlogPost;
+
+export const Head = ({ data: { markdownRemark: post } }) => {
+  const site = useSiteMetadata();
+  const defaultTitle = site?.title || '';
+  const title = post?.frontmatter?.title
+    ? `${post.frontmatter.title}${defaultTitle ? ` | ${defaultTitle}` : ''}`
+    : defaultTitle;
+  const description = post?.frontmatter?.description || site?.description || '';
+
+  return (
+    <>
+      <title>{title}</title>
+      <meta name="description" content={description} />
+      <meta property="og:title" content={title} />
+      <meta property="og:description" content={description} />
+      <meta name="twitter:card" content="summary" />
+    </>
+  );
+};
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
@@ -52,7 +71,7 @@ export const pageQuery = graphql`
       html
       frontmatter {
         title
-        date(formatString: "MMMM DD, YYYY")
+        date
         description
       }
     }
