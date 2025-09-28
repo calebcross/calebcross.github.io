@@ -46,3 +46,28 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
+      - name: Wait for Pages to be ready and smoke-test
+        env:
+          REPO: ${{ github.repository }}
+          OWNER: ${{ github.repository_owner }}
+        run: |
+          echo "Fetching Pages info for $REPO"
+          # Query the Pages endpoint for the repository to get the URL
+          PAGES_JSON=$(curl -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/pages")
+          PUBLISHED_URL=$(echo "$PAGES_JSON" | jq -r '.html_url')
+          echo "Published URL: $PUBLISHED_URL"
+
+          # Simple retry loop to wait for the site to be available
+          for i in {1..10}; do
+            echo "Attempt $i: checking $PUBLISHED_URL"
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PUBLISHED_URL" || true)
+            echo "HTTP status: $STATUS"
+            if [[ "$STATUS" == "200" ]]; then
+              echo "Site is up"
+              exit 0
+            fi
+            sleep $((i * 3))
+          done
+
+          echo "Site did not become available after retries"
+          exit 1

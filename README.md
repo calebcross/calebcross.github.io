@@ -17,9 +17,9 @@ Some of the features include:
 
 ## Demo
 
-For a live demo of the base template, [click here](https://elastic-meninsky-aa7c74.netlify.app/).
+For a live demo of the base template, see the hosted demo on Netlify: [elastic-meninsky-aa7c74](https://elastic-meninsky-aa7c74.netlify.app/).
 
-For a live demo of a slightly customized version of the template (my own personal site), [click here](https://rfitz.io).
+For a live demo of a slightly customized version of the template (my own personal site), see: [rfitz.io](https://rfitz.io).
 
 ## Contents
 
@@ -157,6 +157,26 @@ As with Netlify, the deployment can be also done manually following identical se
 
 If you'd like, you can setup a build pipeline fairly easily that allows you to use GitHub Pages. To find more information, [read this guide](https://www.gatsbyjs.com/docs/how-gatsby-works-with-github-pages/).
 
+#### GitHub Actions (GitHub Pages)
+
+This repository includes a GitHub Actions workflow that builds the site and deploys the generated `public/` folder to GitHub Pages.
+
+How to use it:
+
+- Add a repository secret named `GOOGLE_GTAG_ID` with your measurement ID (for example `G-XXXXXXXXXX`) under Settings → Secrets → Actions. If you don't want analytics in your build, leave the secret empty or unset.
+- Push to the `master` branch (or run the workflow manually via the Actions tab) to trigger the build and deployment. The workflow file is at `.github/workflows/deploy.yml`.
+- The workflow injects `GOOGLE_GTAG_ID` into the build environment so `gatsby-config.js` will include the analytics plugin only when the secret is present.
+
+Notes:
+- If your production branch is not `master`, edit `.github/workflows/deploy.yml` to listen for pushes to your production branch.
+- For CI-based secret setup (GitHub Actions), add the secret via the repository UI or via the GitHub CLI:
+
+  ```bash
+  gh secret set GOOGLE_GTAG_ID --body "G-XXXXXXXXXX"
+  ```
+
+This setup keeps your real Google Tag ID out of source control while still deploying analytics-enabled builds in CI.
+
 ### Other
 
 If you want to learn more about the many other options to deploy, take a look at the [Deploying & Hosting](https://www.gatsbyjs.com/docs/deploying-and-hosting/) section of the GatsbyJS docs where they go through examples on how to deploy on Gatsby Cloud, Azure, AWS Amplify, AWS S3, and many more.
@@ -173,7 +193,7 @@ Devfolio is built on GatsbyJS, so it comes with all the benefits of it. You can 
 
 GatsbyJS is based on React, so the template uses a bunch of React components behind the scenes. These components can be found in `src/components` in case you wish to create more or edit the current ones. With the exception of a couple GatsbyJS-specific components being imported, everything else is traditional React.
 
-One thing to note is that if you wish to query data in one of the components, you can do so with the `<StaticQuery/>` component that comes with GatsbyJs. For more information, [click here](https://www.gatsbyjs.com/docs/static-query/#reach-skip-nav).
+One thing to note is that if you wish to query data in one of the components, you can do so with the `<StaticQuery/>` component that comes with GatsbyJs. For more information, see the Gatsby docs on StaticQuery: https://www.gatsbyjs.com/docs/static-query/#reach-skip-nav.
 
 ### Adding or Updating Pages
 
@@ -183,13 +203,13 @@ The pages for the template exist in `src/pages` and are simply React components 
 - `src/pages/blog.jsx` - the main `/blog` homepage
 - `src/pages/404.jsx` - the default 404 page
 
-You can easily modify those pages and create new ones. Gatsby core automatically takes any React component in `src/pages/*` and turns it into a separate page (they must export a component as a default export). For example, if you make a new component as `src/pages/page1.jsx`, it will automatically create a new page that can be visited via `mysite.com/page1`. For more information on pages as well as other ways they can be created, [click here](https://www.gatsbyjs.com/docs/creating-and-modifying-pages/).
+You can easily modify those pages and create new ones. Gatsby core automatically takes any React component in `src/pages/*` and turns it into a separate page (they must export a component as a default export). For example, if you make a new component as `src/pages/page1.jsx`, it will automatically create a new page that can be visited via `mysite.com/page1`. For more information on pages as well as other ways they can be created, see Gatsby's page creation docs: https://www.gatsbyjs.com/docs/creating-and-modifying-pages/.
 
 ### Adding or Updating Styles
 
 Devfolio is fully styled with [TailwindCSS](https://tailwindcss.com/) with the exception of a couple minor additional styles, as found in `src/css/index.css`.
 
-When the GatsbyJS development server is running, you'll have access to all of the Tailwind styles, however once you deploy (i.e. build the static assets), PurgeCSS runs against them and only leaves the Tailwind styles that were actually used. This is beneficial because it keeps the build size considerably smaller, however there are some important considerations to keep in mind in order to keep the HTML purgeable. For example, if you use string concatenation to create a class name, PurgeCSS won't be able to figure out what that is. For more information on writing purgeable HTML + other methods to control file size, [click here](https://tailwindcss.com/docs/controlling-file-size).
+When the GatsbyJS development server is running, you'll have access to all of the Tailwind styles, however once you deploy (i.e. build the static assets), PurgeCSS runs against them and only leaves the Tailwind styles that were actually used. This is beneficial because it keeps the build size considerably smaller, however there are some important considerations to keep in mind in order to keep the HTML purgeable. For example, if you use string concatenation to create a class name, PurgeCSS won't be able to figure out what that is. For more information on writing purgeable HTML and other methods to control file size, see the Tailwind docs: https://tailwindcss.com/docs/controlling-file-size.
 
 The pattern current used in the template when it comes to writing React components with Tailwind CSS is as follows:
 
