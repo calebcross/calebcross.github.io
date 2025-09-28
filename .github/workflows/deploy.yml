@@ -36,6 +36,12 @@ jobs:
         with:
           path: ./public
 
+      - name: Upload a generic artifact (optional, satisfies runner suggestion)
+        uses: actions/upload-artifact@v4
+        with:
+          name: public-artifact
+          path: ./public
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
