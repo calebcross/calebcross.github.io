@@ -30,8 +30,14 @@ jobs:
           NODE_ENV: production
           GOOGLE_GTAG_ID: ${{ secrets.GOOGLE_GTAG_ID }}
         run: npm run build
+      - name: Show build output (diagnostic)
+        run: |
+          echo "public exists: $( [ -d ./public ] && echo yes || echo no )"
+          echo "listing public/"
+          ls -la ./public || true
+          echo "size:"; du -sh ./public || true
 
-      - name: Upload artifact for GitHub Pages
+      - name: Upload artifact for GitHub Pages (required for deploy-pages)
         uses: actions/upload-pages-artifact@v1
         with:
           path: ./public
@@ -46,24 +52,31 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
+      contents: write
       pages: write
       id-token: write
 
     steps:
-      - name: Deploy to GitHub Pages
-        uses: actions/deploy-pages@v1
+      - name: Checkout the repo
+        uses: actions/checkout@v4
+
+      - name: Deploy to gh-pages branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          publish_branch: gh-pages
+
       - name: Wait for Pages to be ready and smoke-test
         env:
           REPO: ${{ github.repository }}
           OWNER: ${{ github.repository_owner }}
         run: |
           echo "Fetching Pages info for $REPO"
-          # Query the Pages endpoint for the repository to get the URL
           PAGES_JSON=$(curl -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/pages")
           PUBLISHED_URL=$(echo "$PAGES_JSON" | jq -r '.html_url')
           echo "Published URL: $PUBLISHED_URL"
 
-          # Simple retry loop to wait for the site to be available
           for i in {1..10}; do
             echo "Attempt $i: checking $PUBLISHED_URL"
             STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PUBLISHED_URL" || true)
