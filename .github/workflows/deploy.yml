@@ -1,92 +1,55 @@
-name: Build and deploy to GitHub Pages
+# .github/workflows/deploy.yml
+name: Deploy Gatsby to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
-  workflow_dispatch: {}
+    branches: [ main ]   # change to 'master' if that's your default
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pages: write
-      id-token: write
-
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: "20"
+          cache: "npm"
 
-      - name: Install dependencies
-        run: npm ci || npm install
+      - name: Install
+        run: npm ci
 
-      - name: Build
+      - name: Build (Gatsby)
         env:
           NODE_ENV: production
+          # Optional: GA4
           GOOGLE_GTAG_ID: ${{ secrets.GOOGLE_GTAG_ID }}
         run: npm run build
-      - name: Show build output (diagnostic)
-        run: |
-          echo "public exists: $( [ -d ./public ] && echo yes || echo no )"
-          echo "listing public/"
-          ls -la ./public || true
-          echo "size:"; du -sh ./public || true
 
-      - name: Upload artifact for GitHub Pages (required for deploy-pages)
-        uses: actions/upload-pages-artifact@v1
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v4
         with:
-          path: ./public
-
-      - name: Upload a generic artifact (optional, satisfies runner suggestion)
-        uses: actions/upload-artifact@v4
-        with:
-          name: public-artifact
           path: ./public
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pages: write
-      id-token: write
-
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - name: Checkout the repo
-        uses: actions/checkout@v4
-
-      - name: Deploy to gh-pages branch
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
-          publish_branch: gh-pages
-
-      - name: Wait for Pages to be ready and smoke-test
-        env:
-          REPO: ${{ github.repository }}
-          OWNER: ${{ github.repository_owner }}
-        run: |
-          echo "Fetching Pages info for $REPO"
-          PAGES_JSON=$(curl -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/$REPO/pages")
-          PUBLISHED_URL=$(echo "$PAGES_JSON" | jq -r '.html_url')
-          echo "Published URL: $PUBLISHED_URL"
-
-          for i in {1..10}; do
-            echo "Attempt $i: checking $PUBLISHED_URL"
-            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PUBLISHED_URL" || true)
-            echo "HTTP status: $STATUS"
-            if [[ "$STATUS" == "200" ]]; then
-              echo "Site is up"
-              exit 0
-            fi
-            sleep $((i * 3))
-          done
-
-          echo "Site did not become available after retries"
-          exit 1
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
