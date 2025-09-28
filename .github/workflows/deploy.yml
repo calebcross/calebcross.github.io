@@ -31,12 +31,33 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Mask GA4 secret value (defense-in-depth)
+        run: echo "::add-mask::${{ secrets.GOOGLE_GTAG_ID }}"
+
+      - name: Verify GA4 secret is set
+        env:
+          GOOGLE_GTAG_ID: ${{ secrets.GOOGLE_GTAG_ID }}
+        run: |
+          if [ -z "$GOOGLE_GTAG_ID" ]; then
+            echo "ERROR: GOOGLE_GTAG_ID is not set."
+            exit 1
+          fi
+          echo "GOOGLE_GTAG_ID is present (length: ${#GOOGLE_GTAG_ID})"
+
       - name: Build (Gatsby)
         env:
           NODE_ENV: production
-          # Optional: GA4
           GOOGLE_GTAG_ID: ${{ secrets.GOOGLE_GTAG_ID }}
         run: npm run build
+
+      - name: Check GA tag exists in built HTML
+        run: |
+          if grep -Rq "www.googletagmanager.com/gtag/js?id=" public; then
+            echo "✅ Found GA4 loader script in /public."
+          else
+            echo "❌ GA4 loader script not found in /public."
+            exit 1
+          fi
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v4
