@@ -19,7 +19,7 @@ module.exports = {
     // Optional: LinkedIn account URL
     linkedin: `https://www.linkedin.com/in/calebacross/`,
     // Content of the About Me section
-    about: `Full Stack Software Engineer with 4+ years of experience building and optimizing marketing and e-commerce websites with React, Next.js, and Contentful. Skilled in Core Web Vitals optimization, SEO enhancements, accessibility (WCAG 2.1), and scalable component design. Partnered closely with marketing, growth, and design teams to deliver high-converting, high-performing websites. Recently launched a Next.js + Shopify marketing site, drove CRO experiments and A/B testing with experimentation tools, and reduced accessibility violations by 97%. Experienced with analytics tagging (Google Tag Manager), QA testing, and rapid deployments with Vercel. Customer-facing engineer with strong communication and documentation skills.`,
+    about: `Full-stack software engineer specializing in marketing & e-commerce. I ship React/Next.js + Contentful sites that score in the green on Core Web Vitals, meet WCAG 2.1, and convert better through SEO and CRO/A-B testing. Comfortable customer-facing—owning analytics (GTM), QA, and rapid Vercel releases.`,
     // Optional: List your projects, they must have `name` and `description`. `link` is optional.
     projects: [
       {
@@ -29,7 +29,7 @@ module.exports = {
         link: 'https://www.upriseart.com',
       },
       {
-        name: 'ForaTravel',
+        name: 'Fora Travel',
         description:
           'ForATravel.com, a marketing site developed with Next.js, Tailwind CSS, and Contentful. Designed reusable components and scalable content models to empower the marketing team to launch new campaigns quickly. Focused on performance, accessibility, and Core Web Vitals, ensuring a fast, engaging experience that supported brand growth.',
         link: 'https://www.foratravel.com',
