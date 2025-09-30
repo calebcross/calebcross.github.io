@@ -11,7 +11,7 @@ module.exports = {
     // Main Site Title
     title: `Caleb Cross | Web Experience Engineer`,
     // Description that goes under your name in main bio
-    description: `Fullstack Software Engineer focused on Marketing & E-commerce`,
+    description: `Frontend-leaning Fullstack Software Engineer focused on Marketing & E-commerce`,
     // Optional: Twitter account handle
     author: ``,
     // Optional: Github account URL
